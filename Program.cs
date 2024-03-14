@@ -89,5 +89,58 @@
                 Console.WriteLine("File does not exist");
             }
         }
+
+
+        static void CreateFileFromData()
+        {
+            bool fileExists = File.Exists(file);
+            bool headerWritten = false;
+
+            using (StreamWriter sw = new StreamWriter(file, append: fileExists))
+            {
+                if (!fileExists && !headerWritten)
+                {
+                    sw.WriteLine("TicketID, Summary, Status, Priority, Submitter, Assigned, Watching");
+                    headerWritten = true;
+                }
+
+                string userChoice;
+                do
+                {
+                    Console.WriteLine("Enter TicketID:");
+                    int ticketID = int.Parse(Console.ReadLine());
+
+                    Console.WriteLine("Enter Summary:");
+                    string summary = Console.ReadLine();
+
+                    Console.WriteLine("Enter Status:");
+                    string status = Console.ReadLine();
+
+                    Console.WriteLine("Enter Priority:");
+                    string priority = Console.ReadLine();
+
+                    Console.WriteLine("Enter Submitter:");
+                    string submitter = Console.ReadLine();
+
+                    Console.WriteLine("Enter Assigned Person:");
+                    string assigned = Console.ReadLine();
+
+                    Console.WriteLine("Enter Watching (use ',' to separate names):");
+                    string watchingInput = Console.ReadLine();
+        
+                    List<string> watchingList = watchingInput.Split(',')
+                    .Select(w => w.Trim())
+                    .ToList(); // Split and trim names
+
+                    Ticket newTicket = new Ticket(ticketID, summary, status, priority, submitter, assigned, watchingList);
+
+                    sw.WriteLine(newTicket.ToString());
+
+                    Console.WriteLine("Do you want to add another ticket? (Y/N)");
+                    userChoice = Console.ReadLine().ToUpper();
+
+                } while (userChoice == "Y");
+            }
+        }
     }
 }
