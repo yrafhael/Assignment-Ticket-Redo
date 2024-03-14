@@ -20,5 +20,10 @@ namespace Ticketing
             Assigned = assigned;
             Watching = watching;
         }
+
+        public override string ToString()
+        {
+            return $"{TicketID}, {Summary}, {Status}, {Priority}, {Submitter}, {Assigned}, {string.Join("|", Watching)}";
+        }
     }
 }
